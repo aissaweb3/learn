@@ -20,6 +20,8 @@ const app = express();
 //--------------routes
   const main = require('./routers/main');
   app.use('/', main);
+  const auth = require('./routers/auth');
+  app.use('/', auth);
 //--------------routes
 
 
