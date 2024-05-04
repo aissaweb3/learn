@@ -13,10 +13,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  createdAt DateTime @default(now())
+model Root {
+  id        Int     @id @default(autoincrement())
+  firstname String?
+  lastname  String?
+  role      String?
+  username  String?
+  password  String? @default("default_password")
 }
 
+model User {
+  id        Int     @id @default(autoincrement())
+  firstname String?
+  lastname  String?
+  team      Team?   @relation(fields: [teamId], references: [id])
+  teamId    Int?
+  username  String? @unique
+  password  String?
+  points    Int?    @default(0)
+}
+
+model Team {
+  id          Int           @id @default(autoincrement())
+  name        String?
+  description String?
+  users       User[]
+  tasks       Task[]
+  projects    ProjectTeam[] // Change: Use a junction table
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  name        String?
+  description String?
+  team        Team?    @relation(fields: [teamId], references: [id])
+  teamId      Int?
+  start       DateTime @default(now())
+  end         DateTime
+  plusPoint   Int?
+  minusPoint  Int?
+  status      String? //'Not Started' 'Started' 'Time Expired' "Waiting"
+}
+
+model Project {
+  id          Int           @id @default(autoincrement())
+  name        String?
+  description String?
+  start       DateTime      @default(now())
+  end         DateTime
+  teams       ProjectTeam[] // Change: Use a junction table
+  Percentages Json
+}
+
+model ProjectTeam {
+  id        Int     @id @default(autoincrement())
+  team      Team    @relation(fields: [teamId], references: [id])
+  teamId    Int
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int
+}
