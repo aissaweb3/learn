@@ -32,40 +32,14 @@ router.post("/getAllData", async (req, res) => {
 
   const data = { users, teams, tasks, projects };
 
-  res.status(200).json({ success: true, data });
+  return res.status(200).json({ success: true, data });
 });
 
-router.post("/getUsers", async (req, res) => {
-  const { token, filter } = req.body;
-  isRoot(res, token);
-
-  try {
-    let users;
-    if (filter) {
-      users = await prisma.user.findMany({ where: filter });
-    } else {
-      users = await prisma.user.findMany({});
-    }
-    return res.status(200).json({ success: true, users });
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    return res.status(500).json({ success: false, message: "Server Error" });
-  }
-});
-
-router.post("/getUser/:id", async (req, res) => {
-  const { token } = req.body;
-  const id = parseInt(req.params.id);
-  isRoot(res, token);
-
-  try {
-    let users;
-    user = await prisma.user.findUnique({ where: { id } });
-    return res.status(200).json({ success: true, user });
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    return res.status(500).json({ success: false, message: "Server Error" });
-  }
-});
+// tasks
+const tasks = require("../tools/crud/tasks");
+router.use("/task", tasks);
+// users
+const users = require("../tools/crud/users");
+router.use("/user", users);
 
 module.exports = router;

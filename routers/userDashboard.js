@@ -11,7 +11,7 @@ router.post("/chooseTeam", async (req, res) => {
 
   const payload = verifyToken(token);
   if (!payload)
-    res.status(401).json({ success: false, message: "Not Authorized" });
+    return res.status(401).json({ success: false, message: "Not Authorized" });
   const { userId } = payload;
   const user = await prisma.user.findFirst({ where: { id: userId } });
   const team = await prisma.team.findFirst({ where: { id: teamId } });
@@ -31,7 +31,7 @@ router.post("/chooseTeam", async (req, res) => {
       console.log("changed team.");
     })
     .catch((err) => {
-      res.status(500).json({ success: false, message: "Server Error" });
+      return res.status(500).json({ success: false, message: "Server Error" });
       console.log(err);
     });
 });

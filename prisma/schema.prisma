@@ -51,15 +51,15 @@ enum TaskStatus {
 
 model Task {
   id          Int        @id @default(autoincrement())
+  start       DateTime
+  end         DateTime
   name        String?
   description String?
+  status      TaskStatus
+  plusPoint   Int?       @default(0)
+  minusPoint  Int?       @default(0)
   team        Team?      @relation(fields: [teamId], references: [id])
   teamId      Int?
-  start       DateTime   @default(now())
-  end         DateTime
-  plusPoint   Int?
-  minusPoint  Int?
-  status      TaskStatus
 }
 
 model Project {

@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
 
   const user = await prisma.user.create({ data })
 */
-  res.send("home page working");
+  return res.send("home page working");
 });
 
 module.exports = router;
