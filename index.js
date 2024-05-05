@@ -16,12 +16,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //--------------routes
 const main = require("./routers/main");
 app.use("/", main);
-const auth = require("./routers/auth");
-app.use("/auth", auth);
 const root = require("./routers/root");
 app.use("/root", root);
+const rootDashboard = require("./routers/rootDashboard");
+app.use("/root/dashboard", rootDashboard);
 const user = require("./routers/user");
 app.use("/user", user);
+const userDashboard = require("./routers/userDashboard");
+app.use("/user/dashboard", userDashboard);
 //--------------routes
 
 app.listen(5000, () => {
