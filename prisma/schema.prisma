@@ -42,17 +42,24 @@ model Team {
   projects    ProjectTeam[] // Change: Use a junction table
 }
 
+enum TaskStatus {
+  NOT_STARTED
+  STARTED
+  TIME_EXPIRED
+  WAITING
+}
+
 model Task {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String?
   description String?
-  team        Team?    @relation(fields: [teamId], references: [id])
+  team        Team?      @relation(fields: [teamId], references: [id])
   teamId      Int?
-  start       DateTime @default(now())
+  start       DateTime   @default(now())
   end         DateTime
   plusPoint   Int?
   minusPoint  Int?
-  status      String? //'Not Started' 'Started' 'Time Expired' "Waiting"
+  status      TaskStatus
 }
 
 model Project {
